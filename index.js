@@ -22,9 +22,47 @@
 
 "use strict";
 
-exports.homestar = null;
+var mdns = require('mdns');
+var iotdb = require('iotdb');
+var _ = iotdb._;
+
+var advertise_http = function(homestar) {
+    var td = {};
+    var client_id = _.d.get(homestar.settings, "/keys/homestar/key");
+    if (client_id) {
+        td.runner = client_id;
+    }
+    var ad = mdns.createAdvertisement(
+        mdns.tcp('http'), 
+        homestar.settings.webserver.port,
+        {
+            name: homestar.settings.name,
+            txtRecord: td
+        });
+    ad.start();
+};
+
+var advertise_api = function(homestar) {
+    var td = {
+        api: "/api"
+    };
+    var client_id = _.d.get(homestar.settings, "/keys/homestar/key");
+    if (client_id) {
+        td.runner = client_id;
+    }
+    var ad = mdns.createAdvertisement(
+        mdns.tcp('iotdb'), 
+        homestar.settings.webserver.port,
+        {
+            name: homestar.settings.name,
+            txtRecord: td
+        });
+    ad.start();
+};
+
 exports.web = {
     setup: function(app, homestar) {
-        exports.homestar = homestar;
+        advertise_http(homestar);
+        advertise_api(homestar);
     }
 };

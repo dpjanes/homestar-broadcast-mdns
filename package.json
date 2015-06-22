@@ -4,9 +4,9 @@
         "url": "https://github.com/dpjanes/homestar-broadcast-mdns/issues"
     }, 
     "dependencies": {
-        "mdns": "~0.4.5"
-    },
-    "description": "HomeStar / IOTDB Bridge for Template", 
+        "mdns": "~2.2.9"
+    }, 
+    "description": "HomeStar - advertise server using MDNS",
     "devDependencies": {
         "grunt": "~0.4.5", 
         "grunt-contrib-jshint": "~0.10.0", 
@@ -24,7 +24,7 @@
     "main": "index.js", 
     "name": "homestar-broadcast-mdns", 
     "peerDependencies": {
-        "iotdb": ">=0.6.3"
+        "iotdb": "~0.7.11"
     }, 
     "private": false, 
     "repository": {
