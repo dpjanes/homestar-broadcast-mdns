@@ -26,20 +26,25 @@ var mdns = require('mdns');
 var iotdb = require('iotdb');
 var _ = iotdb._;
 
+var ad_http;
+var ad_api;
+
 var advertise_http = function(homestar) {
     var td = {};
     var client_id = _.d.get(homestar.settings, "/keys/homestar/key");
     if (client_id) {
         td.runner = client_id;
     }
-    var ad = mdns.createAdvertisement(
+
+    ad_http = mdns.createAdvertisement(
         mdns.tcp('http'), 
         homestar.settings.webserver.port,
         {
-            name: homestar.settings.name,
+            // host: homestar.settings.webserver.host,
+            name: "Home☆Star: " + homestar.settings.name,
             txtRecord: td
         });
-    ad.start();
+    ad_http.start();
 };
 
 var advertise_api = function(homestar) {
@@ -50,14 +55,16 @@ var advertise_api = function(homestar) {
     if (client_id) {
         td.runner = client_id;
     }
-    var ad = mdns.createAdvertisement(
+
+    ad_api = mdns.createAdvertisement(
         mdns.tcp('iotdb'), 
         homestar.settings.webserver.port,
         {
+            // host: homestar.settings.webserver.host,
             name: homestar.settings.name,
             txtRecord: td
         });
-    ad.start();
+    ad_api.start();
 };
 
 exports.web = {
