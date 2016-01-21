@@ -29,47 +29,47 @@ var _ = iotdb._;
 var ad_http;
 var ad_api;
 
-var advertise_http = function(homestar) {
+var advertise_http = function(locals) {
     var td = {};
-    var client_id = _.d.get(homestar.settings, "/keys/homestar/key");
+    var client_id = _.d.get(locals.homestar.settings, "/keys/homestar/key");
     if (client_id) {
         td.runner = client_id;
     }
 
     ad_http = mdns.createAdvertisement(
         mdns.tcp('http'), 
-        homestar.settings.webserver.port,
+        locals.homestar.settings.webserver.port,
         {
-            // host: homestar.settings.webserver.host,
-            name: "Home☆Star: " + homestar.settings.name,
+            // host: locals.homestar.settings.webserver.host,
+            name: "Home☆Star: " + locals.homestar.settings.name,
             txtRecord: td
         });
     ad_http.start();
 };
 
-var advertise_api = function(homestar) {
+var advertise_api = function(locals) {
     var td = {
         api: "/api"
     };
-    var client_id = _.d.get(homestar.settings, "/keys/homestar/key");
+    var client_id = _.d.get(locals.homestar.settings, "/keys/homestar/key");
     if (client_id) {
         td.runner = client_id;
     }
 
     ad_api = mdns.createAdvertisement(
         mdns.tcp('iotdb'), 
-        homestar.settings.webserver.port,
+        locals.homestar.settings.webserver.port,
         {
-            // host: homestar.settings.webserver.host,
-            name: homestar.settings.name,
+            // host: locals.homestar.settings.webserver.host,
+            name: locals.homestar.settings.name,
             txtRecord: td
         });
     ad_api.start();
 };
 
-exports.web = {
-    setup: function(app, homestar) {
-        advertise_http(homestar);
-        advertise_api(homestar);
+exports.homestar = {
+    setup_app: function(locals, app) {
+        advertise_http(locals);
+        advertise_api(locals);
     }
 };
