@@ -73,3 +73,5 @@ exports.homestar = {
         advertise_api(locals);
     }
 };
+
+exports.module_folder = __dirname;
